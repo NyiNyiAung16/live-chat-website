@@ -4,6 +4,7 @@
     <input type="text" placeholder="display name" v-model="displayName">
     <input type="email" placeholder="email" v-model="email">
     <input type="password" placeholder="password" v-model="password">
+    <div v-if="error" class="error">{{error}}</div>
     <button>Sign Up</button>
   </form>
 </template>
@@ -12,19 +13,19 @@
 import { ref } from 'vue'
 import useSignup from '../composables/useSignup'
 export default {
-    setup(){
+    setup(props,context){
         let displayName=ref('');
         let email=ref('');
         let password=ref('');
-
+        let {error,createAccount}=useSignup();
         let SignUp=async()=>{
-          let {error,createAccount}=useSignup();
           let res=await createAccount(email.value,password.value,displayName.value);
-          
-          
+          if(res){
+            context.emit('enterChatroom');
+          } 
         }
 
-        return {displayName,email,password,SignUp}
+        return {displayName,email,password,SignUp,error}
     }
 }
 </script>
