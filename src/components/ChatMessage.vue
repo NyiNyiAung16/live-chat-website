@@ -1,15 +1,14 @@
 <template>
   <div class="message" >
-    <div class="message-content">
+    <div class="message-content" ref="msgbox">
         <div class="message-body" v-for="messageContent in formattedMessages" :key="messageContent.id">
             <span class="time">{{messageContent.created_time}}</span>
             <span class="name">{{messageContent.name}}</span>
             <span>{{messageContent.message}}</span>
         </div>
     </div>
-    <div class="scroll"></div>
+    <aside class="scroll"></aside>
   </div>
-  <!-- ref="msgbox" -->
 </template>
 
 <script>
@@ -19,14 +18,10 @@ import {formatDistanceToNow} from 'date-fns'
 export default {
     setup(){
         let msgContents=ref([]);
-        // let msgbox=ref(null);
-
-        // onUpdated(()=>{
-        //     msgbox.value.scrollTop=msgbox.value.scrollHeight
-        // })
-
-
-
+        let msgbox=ref(null);
+        onUpdated(()=>{
+            msgbox.value.scrollTop=msgbox.value.scrollHeight
+        })
 
         let formattedMessages=computed(()=>{
             return msgContents.value.map((msgContent)=>{
@@ -56,7 +51,8 @@ export default {
     }
     .message-content{
         padding: 20px;
-        
+        height: 777px;
+        overflow: auto;
     }
     .message-body{
         margin-bottom: 20px;
@@ -74,8 +70,15 @@ export default {
         font-weight: bold;
         font-size: 18px;
     }
-    .scroll{
-        overflow: hidden;
-        overflow-y: scroll;
+    ::-webkit-scrollbar{
+        width: 15px;
+
+    }
+    ::-webkit-scrollbar-track{
+        background: rgb(125, 123, 123);
+    }
+    ::-webkit-scrollbar-thumb{
+       background: linear-gradient(rgb(198, 196, 196),rgb(40, 223, 217));
+        border-radius: 10px;
     }
 </style>
